@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: Swagger OpenAPI - OpenAPI 3.0
+  description: |-
+    An open api spec for [indexNow](https://www.indexnow.org/)
+  version: 1.0.11
+tags:
+  - name: indexNow
+    description: IndexNow protocol
+paths:
+  /indexnow:
+    get:
+      summary: Index a single url in open api
+      parameters:
+        - in: query
+          name: url
+          schema:
+            type: string
+            nullable: false
+          required: true
+          description: a URL of your website which has been added, updated, or deleted. URL must be URL-escaped and encoded and please make sure that your URLs follow the RFC-3986 standard for URIs.
+        - in: query
+          name: key
+          schema:
+            type: string
+            nullable: false
+          required: true
+          description: "should have a minimum of 8 and a maximum of 128 hexadecimal characters. The key can contain only the following characters: lowercase characters (a-z), uppercase characters (A-Z), numbers (0-9), and dashes (-)."
+        - in: query
+          name: keyLocation
+          schema:
+            type: string
+          required: false
+          description: "A parameter that allows you to specify the key location in case it doesn't exist at the website root"
+      responses:
+        "200":
+          description: URL submitted successfully
+        "202":
+          description: URL received. IndexNow key validation pending.
+        "400":
+          description: Invalid format
+        "403":
+          description: In case of key not valid (e.g. key not found, file found but key not in the file)
+        "422":
+          description: In case of URLs which don’t belong to the host or the key is not matching the schema in the protocol
+        "429":
+          description: Too Many Requests (potential Spam)
+    post:
+      requestBody:
+        description: endpoint to submit bulk url, you can submit up to 10000 url using this endpoint
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UrlSet"
+      responses:
+        "201":
+          description: Created
+components:
+  schemas:
+    UrlSet:
+      type: object
+      properties:
+        host:
+          type: string
+          nullable: false
+          description: The host for the urls to be indexed
+        key:
+          type: string
+          nullable: false
+          description: "should have a minimum of 8 and a maximum of 128 hexadecimal characters. The key can contain only the following characters: lowercase characters (a-z), uppercase characters (A-Z), numbers (0-9), and dashes (-)."
+        keyLocation:
+          type: string
+          nullable: true
+          description: "To be used in case the user specifies an alternative location"
+        urlList:
+          type: array
+          items:
+            type: string
+            nullable: false
+          description: The set of urls to be submitted
