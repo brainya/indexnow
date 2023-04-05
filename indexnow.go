@@ -3,6 +3,7 @@ package indexnow
 import (
 	"context"
 	"net/http"
+	"strings"
 )
 
 type SearchEngineURL = string
@@ -20,7 +21,7 @@ func NewIndexer(seu SearchEngineURL, host string, key string, keyLocation *strin
 	return &SearchEngine{
 		searchEngineURL: seu,
 		client:          client,
-		host:            host,
+		host:            strings.TrimPrefix(host, "https://"),
 		key:             key,
 		keyLocation:     keyLocation,
 	}, nil
