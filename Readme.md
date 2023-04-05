@@ -2,9 +2,9 @@
 
 IndexNow is a simple ping so that search engines know that a URL has been changed.
 
-This is a go library that allows to index ping search engines for website update.
+This is a go library that allows to ping search engines for website update.
 
-So far bing and yandex supports the website, and google [confirmed](https://www.searchenginejournal.com/google-will-be-testing-indexnow/426602/) that they will be testing it 
+So far bing and yandex supports this protocol, and google [confirmed](https://www.searchenginejournal.com/google-will-be-testing-indexnow/426602/) that they will be testing it.
 
 In order to use this library first you have to:
 1) generate an api key and host an api key as specified in https://www.bing.com/indexnow
