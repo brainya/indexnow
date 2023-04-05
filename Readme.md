@@ -20,7 +20,7 @@ if err != nil {
 }
 fmt.Println("status code", res.StatusCode)
 ```
-and for bulk update
+and for bulk update (up to 10000 link)
 ```golang
 s, _ := indexnow.NewIndexer(indexnow.BING, "brainya.com", "123412345263245cf12451", nil)
 res, err := s.BulkIndexPages(context.Background(), &[]string{
