@@ -4,6 +4,8 @@ import (
 	"context"
 	"net/http"
 	"strings"
+
+	"github.com/brainya/indexnow/api"
 )
 
 type SearchEngineURL = string
@@ -14,7 +16,7 @@ const (
 )
 
 func NewIndexer(seu SearchEngineURL, host string, key string, keyLocation *string) (*SearchEngine, error) {
-	client, err := NewClient(seu)
+	client, err := api.NewClient(seu)
 	if err != nil {
 		return nil, err
 	}
@@ -29,14 +31,14 @@ func NewIndexer(seu SearchEngineURL, host string, key string, keyLocation *strin
 
 type SearchEngine struct {
 	searchEngineURL SearchEngineURL
-	client          *Client
+	client          *api.Client
 	host            string
 	key             string
 	keyLocation     *string
 }
 
 func (se *SearchEngine) IndexSinglePage(ctx context.Context, url string) (*http.Response, error) {
-	return se.client.GetIndexnow(ctx, &GetIndexnowParams{
+	return se.client.GetIndexnow(ctx, &api.GetIndexnowParams{
 		Url:         url,
 		Key:         se.key,
 		KeyLocation: se.keyLocation,
@@ -44,7 +46,7 @@ func (se *SearchEngine) IndexSinglePage(ctx context.Context, url string) (*http.
 }
 
 func (se *SearchEngine) BulkIndexPages(ctx context.Context, urlList *[]string) (*http.Response, error) {
-	return se.client.PostIndexnow(ctx, UrlSet{
+	return se.client.PostIndexnow(ctx, api.UrlSet{
 		Host:        &se.host,
 		Key:         &se.key,
 		UrlList:     urlList,

@@ -1,6 +1,6 @@
-package: indexnow
+package: api
 generate:
   client: true
   models: true
   embedded-spec: true
-output: api.gen.go
+output: api/api.gen.go
